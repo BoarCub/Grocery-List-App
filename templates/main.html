@@ -10,21 +10,3 @@
     <a class="button is-link" href="{{ url_for('index') }}">NoUseButton</a>
     <a class="button is-link" href="{{ url_for('profile') }}">Go to profile</a>
 {% endblock %}
-
-<VirtualHost *:80>
-    ServerName dlearninglab.com
-    ServerAdmin cndanielwang@gmail.com
-    WSGIScriptAlias / /usr/local/GL2020/GL/app.wsgi
-    <Directory /usr/local/GL2020/GL/>
-    Order allow,deny
-    Allow from all
-    </Directory>
-    Alias /static /usr/local/GL2020/GL/static
-    <Directory /usr/local/GL2020/GL/static/>
-    Order allow,deny
-    Allow from all
-    </Directory>
-    ErrorLog ${APACHE_LOG_DIR}/error_GL.log
-    LogLevel warn
-    CustomLog ${APACHE_LOG_DIR}/access_GL.log combined
-</VirtualHost>
