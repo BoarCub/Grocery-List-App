@@ -58,14 +58,19 @@ def upload_img():
         filename = secure_filename(file.filename)
         save_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(save_path)
-        jason_data = call_api(SERVER_PATH + filename)
-        return render_template('main.html', base_msg=jason_data)
+        json_data = call_api(SERVER_PATH + filename)
+        if not json_data:
+            return render_template('main.html', error_msg='Error fetching data')
+        return render_template('main.html', base_msg=json_data)
     else:
         return render_template('main.html', error_msg='File is blank or the file format is not allowed')
 
 
 def call_api(path):
-    return json.loads(req.get(url=API + path).text)
+    try:
+        return json.loads(req.get(url=API + path).text)
+    except ValueError:
+        return None
 
 
 def allowed_file(filename):
