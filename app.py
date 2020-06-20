@@ -68,8 +68,9 @@ def upload_img():
 
 def call_api(path):
     try:
-        return json.loads(req.get(url=API + path).text)
-    except ValueError:
+        content = req.get(url=API + path).text
+        return json.loads(content)
+    except:
         return None
 
 
