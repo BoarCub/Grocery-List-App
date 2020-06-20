@@ -56,7 +56,7 @@ def upload_img():
         flash('No selected file')
         return redirect(request.url)
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename + random.random())
+        filename = secure_filename(file.filename + str(random.random()))
         save_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(save_path)
         json_data = call_api(SERVER_PATH + filename)
