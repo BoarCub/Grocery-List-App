@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}-GroceryList</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.0/css/bulma.min.css" />
+</head>
+
+<body>
+
+<section class="hero {% block style %}{% endblock %} is-fullheight">
+    <div class="hero-head">
+        {% if base_msg %}
+            <div class="notification is-info">
+                {{ base_msg }}
+            </div>
+        {% endif %}
+        <nav class="navbar">
+            <div class="container">
+                <div id="navbarMenuHeroA" class="navbar-menu">
+                    <div class="navbar-end">
+{#                        {% if current_user.is_authenticated %}#}
+{#                            <a href="{{ url_for('search') }}" class="navbar-item">#}
+{#                                Search#}
+{#                            </a>#}
+{#                        {% endif %}#}
+                        <a href="{{ url_for('index') }}" class="navbar-item">
+                            Home
+                        </a>
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('profile') }}" class="navbar-item">
+                                Profile
+                            </a>
+{#                            <a href="{{ url_for('learn') }}" class="navbar-item">#}
+{#                                Learn#}
+{#                            </a>#}
+                        {% endif %}
+                        {% if not current_user.is_authenticated %}
+{#                            After registering blueprint, we can do crazy stuffs using url_for like this! #}
+{#                            This is basically calling the function! crazy! #}
+                            <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                                Login
+                            </a>
+                            <a href="{{ url_for('auth.signup') }}" class="navbar-item">
+                                Sign Up
+                            </a>
+                        {% endif %}
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+                                Logout
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hero-body">
+
+        <div class="container has-text-centered">{% block content %}{% endblock %}</div>
+        {% block body %}
+        {% endblock %}
+
+    </div>
+</section>
+</body>
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            <strong>myGlossary</strong> by <a href="https://github.com/zhongxuanwang">Daniel Wang</a>.
+            The website is open-sourced and you could find code in <a href="https://github.com/zhongxuanwang/My-Glossary">here</a>.
+        </p>
+    </div>
+</footer>
+</html>

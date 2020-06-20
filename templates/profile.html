@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{#Content are all centered#}
+{% block content %}
+    <h1 class="title">
+        Welcome {{ user.name }}!
+    </h1>
+    <a class="button is-info" href="{{ url_for('auth.account_set') }}">Account Setting</a>
+    <a class="button is-danger" href="{{ url_for('auth.cancel') }}">Cancel my account</a>
+
+{% endblock %}
+
+{% block body %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Index{% endblock %}
+{% block style %}is-primary{% endblock %}
+
+{% block content%}
+    <h1 class="title">Welcome to Grocery List!</h1>
+    {% if current_user.is_authenticated %}
+        <a class="button is-link" href="{{ url_for('index') }}">button1</a>
+        <a class="button is-link" href="{{ url_for('profile') }}">Go to profile</a>
+    {% endif %}
+
+    {% if not current_user.is_authenticated %}
+        <h1 class="subtitle">Login to get started!</h1>
+        <a class="button is-link" href="{{ url_for('auth.login') }}">Login</a>
+        <a class="button is-link" href="{{ url_for('auth.signup') }}">Signup</a>
+    {% endif %}
+{% endblock %}
