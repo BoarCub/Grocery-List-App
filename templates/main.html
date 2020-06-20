@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block Main %}Index{% endblock %}
+{% block content %}
+    <h1 class="subtitle">Just a quick note: This is definitely not what our app will look like. front-end developers should discuss about the
+        design.</h1>
+    <form method=post enctype=multipart/form-data action="{{ url_for('upload_img') }}">
+        <input type=file name=file class="button">
+        <input type="submit" value="Upload" class="button is-primary">
+    </form>
+    <a class="button is-link" href="{{ url_for('index') }}">NoUseButton</a>
+    <a class="button is-link" href="{{ url_for('profile') }}">Go to profile</a>
+{% endblock %}

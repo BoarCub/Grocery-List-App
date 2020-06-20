@@ -13,6 +13,11 @@
 
 <section class="hero {% block style %}{% endblock %} is-fullheight">
     <div class="hero-head">
+        {% if error_msg %}
+            <div class="notification is-danger">
+                {{ error_msg }}
+            </div>
+        {% endif %}
         {% if base_msg %}
             <div class="notification is-info">
                 {{ base_msg }}
@@ -70,8 +75,7 @@
 <footer class="footer">
     <div class="content has-text-centered">
         <p>
-            <strong>myGlossary</strong> by <a href="https://github.com/zhongxuanwang">Daniel Wang</a>.
-            The website is open-sourced and you could find code in <a href="https://github.com/zhongxuanwang/My-Glossary">here</a>.
+            <strong>GroceryList</strong> for DefHack2020, developed by Code Gang.
         </p>
     </div>
 </footer>

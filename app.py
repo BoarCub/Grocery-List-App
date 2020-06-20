@@ -1,6 +1,10 @@
-from flask import Flask, request, flash, render_template, Blueprint
+import json
+import os
+import requests as req
+from flask import Flask, request, flash, render_template, Blueprint, redirect, url_for
 from flask_login import login_required, current_user, LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 
 # The . is a shortcut that tells it search in current package before rest of the PYTHONPATH
 # from .auth import login_required
@@ -9,42 +13,64 @@ app = Flask(__name__)
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
+API = 'https://groceryreaderv6-1.azurewebsites.net/api/ReadOCRLines?url='
+
+SERVER_PATH = 'http://groceryreader.com/GL2020/'
+UPLOAD_FOLDER = '/var/www/GL2020/images'
+ALLOWED_EXTENSIONS = ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif']
+
+
+@app.route('/main', methods=['GET'])
+@login_required
+def main_page():
+    return render_template('main.html')
 
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
-    print("Index")
+    if current_user.is_authenticated:
+        # If user is logged in, just redirected to user main page.
+        return redirect(url_for('main_page'))
     return render_template('index.html')
-
-
-# # @login_required
-# def read_file(filename):
-#     try:
-#         with open(filename) as f:
-#             return f.readline()
-#     except IOError:
-#         print("IO ERROR Raised. Reading file failed,")
-#         f = open(filename, "w")
-#         f.write('email@example.com')
-#         f.close()
-#         return 'content'
-#
-#
-# # @login_required
-# def write_file(filename, file_content):
-#     try:
-#         with open(filename, 'w') as f:
-#             f.write(file_content)
-#     except IOError:
-#         print("IO ERROR Raised. Writing file failed,")
-#     return ''
 
 
 @app.route('/profile')
 @login_required
 def profile():
     return render_template('profile.html', user=current_user)
+
+
+@app.route('/api/upload_img', methods=['POST'])
+@login_required
+def upload_img():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(url_for('main_page'))
+
+    file = request.files['file']
+    # if user does not select file, browser also
+    # submit an empty part without filename
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(save_path)
+        jason_data = call_api(SERVER_PATH + filename)
+    else:
+        return render_template('main.html', error_msg='File is blank or the file format is not allowed')
+    return render_template('main.html', error_msg='Error uploading. Please check if your file is allowed.')
+
+
+def call_api(path):
+    return json.loads(req.get(url=API + path).text)
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def create_app():
@@ -71,6 +97,7 @@ Rename __init__ to wsgi file if you want to deploy on production server
 def run_app():
     app.config['SECRET_KEY'] = 'iamthesecretekeytodatabase'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users/users.db'
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     db.init_app(app)
 
@@ -84,21 +111,12 @@ def run_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        print('in load user function')
         # print('User ID:', user_id)
         # since the user_id is just the primary key of our user table, use it in the query for the user
         from user import User
         return User.query.get(int(user_id))
-    app.run(debug=True)
+    app.run()
 
 
 if __name__ == '__main__':
     run_app()
-
-
-
-
-
-
-
-

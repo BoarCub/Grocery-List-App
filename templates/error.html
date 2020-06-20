@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="title" style="color: #f7595f">Oops, {{ issue }}</h1>
+    <h1 class="subtitle">You will be directed back in 3s...</h1>
+    <script>
+        function f() {
+            window.history.back()
+        }
+        setTimeout(f, 3000)
+    </script>
+{% endblock %}
