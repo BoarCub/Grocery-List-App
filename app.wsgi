@@ -4,7 +4,7 @@ import logging
 logging.basicConfig(stream=sys.stderr)
 
 # This PATH must be full path.
-PATH_TO_APP_FOLDER = './GroceryList'
+PATH_TO_APP_FOLDER = '/var/www/GL2020/GL'
 
 # This name is your python folder name located either in venv or in your system. Mine is python3.6
 PYTHON_FOLDER_NAME = 'python3.6'
