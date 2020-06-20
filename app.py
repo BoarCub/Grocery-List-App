@@ -1,4 +1,5 @@
 import json
+import random
 import os
 import requests as req
 from flask import Flask, request, flash, render_template, Blueprint, redirect, url_for
@@ -55,7 +56,7 @@ def upload_img():
         flash('No selected file')
         return redirect(request.url)
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
+        filename = secure_filename(file.filename + random.random())
         save_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(save_path)
         json_data = call_api(SERVER_PATH + filename)
