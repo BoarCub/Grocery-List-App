@@ -19,7 +19,7 @@ API = 'https://groceryreaderv6-1.azurewebsites.net/api/ReadOCRLines?url='
 # SERVER_PATH = 'http://groceryreader.com/GL2020/'
 SERVER_PATH = 'http://www.dlearninglab.com/GL2020/'
 UPLOAD_FOLDER = '/var/www/GL2020/images'
-ALLOWED_EXTENSIONS = ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif']
+ALLOWED_EXTENSIONS = ['bmp', 'pdf', 'png', 'jpeg', 'TIFF']
 
 
 @app.route('/main', methods=['GET'])
