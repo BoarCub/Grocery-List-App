@@ -16,7 +16,8 @@ app = Flask(__name__)
 db = SQLAlchemy()
 API = 'https://groceryreaderv6-1.azurewebsites.net/api/ReadOCRLines?url='
 
-SERVER_PATH = 'http://groceryreader.com/GL2020/'
+# SERVER_PATH = 'http://groceryreader.com/GL2020/'
+SERVER_PATH = 'http://www.dlearninglab.com/GL2020/'
 UPLOAD_FOLDER = '/var/www/GL2020/images'
 ALLOWED_EXTENSIONS = ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif']
 
@@ -57,8 +58,8 @@ def upload_img():
         filename = secure_filename(str(random.random()) + file.filename)
         save_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(save_path)
-        os.chmod(save_path, 0o555)
-        json_data = call_api(SERVER_PATH + filename)
+        os.chmod(save_path, 0o444)
+        json_data = call_api(SERVER_PATH + 'images/' + filename)
         if not json_data:
             return render_template('main.html', error_msg='Error fetching data')
         return render_template('main.html', base_msg=json_data)
