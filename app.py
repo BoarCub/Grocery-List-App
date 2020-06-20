@@ -46,9 +46,7 @@ def profile():
 @login_required
 def upload_img():
     if 'file' not in request.files:
-        flash('No file part')
-        return redirect(url_for('main_page'))
-
+        return render_template('main.html', error_msg='No file selected')
     file = request.files['file']
     # if user does not select file, browser also
     # submit an empty part without filename
@@ -56,7 +54,7 @@ def upload_img():
         flash('No selected file')
         return redirect(request.url)
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename + str(random.random()))
+        filename = secure_filename(str(random.random()) + file.filename)
         save_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(save_path)
         json_data = call_api(SERVER_PATH + filename)
