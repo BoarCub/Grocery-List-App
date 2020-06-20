@@ -57,7 +57,7 @@ def upload_img():
         filename = secure_filename(str(random.random()) + file.filename)
         save_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(save_path)
-        os.chmod(save_path, 0o444)
+        os.chmod(save_path, 0o555)
         json_data = call_api(SERVER_PATH + filename)
         if not json_data:
             return render_template('main.html', error_msg='Error fetching data')
