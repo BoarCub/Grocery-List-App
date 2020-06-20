@@ -1,0 +1,70 @@
+
+html {
+
+}
+body {
+	background-color:#D9FFF8;
+	font-family: 'Balsamiq Sans';
+}
+#title{
+	color: #CF793F;
+	text-align: center;
+	font-size: 4em;
+}
+#logout_button{
+	position:absolute;
+	/*
+	Because there is no ancestor with position:relative;
+	it positions the button relative to the screen.
+	Or you could add position:relative; to the "html" element
+	and it would work the same way.
+	*/
+	top:10px;
+	right:10px;
+	padding: 10px 15px 10px 15px;
+	font-family: inherit;
+	font-size: 15px;
+	background-color: #DBAD6A;
+	border:none;
+	text-decoration:none;
+}
+.login_container{
+	/*background-color:#f00;
+	*/
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	/*position:relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	*/
+}
+.login_button{
+	/*display:block;
+	margin: auto auto;*/
+	/*position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    */
+    margin: 5px 10px 7px 10px;
+    border:none;
+    border-radius: 10px;
+    width: 350px;
+    height: 30px;
+}
+.login_text{
+	font-size: 2em;
+	margin: 0 0;
+}
+#login_click{
+	margin: 20px 0;
+	width: 80px;
+	height: 30px;
+	font-size: 1em;
+}
