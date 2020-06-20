@@ -56,12 +56,12 @@ def upload_img():
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        save_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(save_path)
         jason_data = call_api(SERVER_PATH + filename)
+        return render_template('main.html', base_msg=jason_data)
     else:
         return render_template('main.html', error_msg='File is blank or the file format is not allowed')
-    return render_template('main.html', error_msg='Error uploading. Please check if your file is allowed.')
 
 
 def call_api(path):
@@ -97,7 +97,6 @@ Rename __init__ to wsgi file if you want to deploy on production server
 def run_app():
     app.config['SECRET_KEY'] = 'iamthesecretekeytodatabase'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users/users.db'
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     db.init_app(app)
 
