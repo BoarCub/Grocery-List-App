@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}Main{% endblock %}
 {% block content %}
+    {% if not current_user.is_guided %}
+        <div class="notification is-primary">
+            Looks like it's your first time coming here. Click <a href="{{ url_for('profile') }}">*here*</a> to get started by giving us your data.
+        </div>
+    {% endif %}
     
     <h1 class="subtitle">Get your dietary feedback</h1>
     <form method=post enctype=multipart/form-data action="{{ url_for('upload_img') }}">

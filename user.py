@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(100))
     authenticated = db.Column(db.Boolean, default=False)
     calories_daily = db.Column(db.Integer, default=1000)
-    # guided = db.Column(db.Boolean, default=False)
+    guided = db.Column(db.Boolean, default=False)
     # dietary_type = db.Column(db.String(100), default=None)
     # nutrition = db.Column(db.)
 
@@ -58,3 +58,6 @@ class User(db.Model, UserMixin):
             return int(self.bmi)
         except ValueError:
             return 0
+
+    def is_guided(self):
+        return self.guided
