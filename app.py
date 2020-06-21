@@ -61,12 +61,13 @@ def upload_img():
         file.save(save_path)
         os.chmod(save_path, 0o444)
         # Call the first API to gain headline
-        title = call_api(API + SERVER_PATH + 'images/' + filename)
-        if not title or title['status'] == 'Running':
+        title = json_safe_get(call_api(API + SERVER_PATH + 'images/' + filename), 'title')
+        if not title:
             return render_template('main.html', error_msg='Error fetching headline')
         # Call the second API to gain detailed information
         json_data = call_api(API2 + SERVER_PATH + 'images/' + filename)
-        if not json_data or json_data['status'] == 'Running':
+        calories = json_safe_get(json_data, 'Calories')
+        if not calories:
             return render_template('main.html', error_msg='Error fetching detailed information')
 
         return render_template('main.html', base_msg=json_data)
@@ -77,6 +78,16 @@ def upload_img():
 def call_api(path):
     try:
         return json.loads(req.get(url=path).text)
+    except:
+        return None
+
+
+# Call this function if the json data is not ensured filled with data and may cause KeyError if fetched directly
+def json_safe_get(json, key):
+    if not json or key not in json:
+        return None
+    try:
+        return json[key]
     except:
         return None
 
@@ -127,6 +138,7 @@ def run_app():
         # since the user_id is just the primary key of our user table, use it in the query for the user
         from user import User
         return User.query.get(int(user_id))
+
     app.run()
 
 
