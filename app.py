@@ -93,7 +93,7 @@ def upload_img():
         json_data = call_api(API2 + SERVER_PATH + filename)
         if len(json_data) != 10:
             return render_template('main.html', error_msg='Error fetching detailed information')
-        for key in json_data.keys:
+        for key in json_data.keys():
             if json_data[key] == '':
                 json_data[key] = 'No data fetched'
         return report(title, json_data)
