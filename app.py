@@ -15,6 +15,7 @@ app = Flask(__name__)
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
 API = 'https://groceryreaderv6-1.azurewebsites.net/api/ReadOCRLines?url='
+API2 = 'https://nutritionalreaderv1.azurewebsites.net/api/NutritionLines?url='
 
 # SERVER_PATH = 'http://groceryreader.com/GL2020/'
 SERVER_PATH = 'http://www.dlearninglab.com/GL2020/'
@@ -59,9 +60,15 @@ def upload_img():
         save_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(save_path)
         os.chmod(save_path, 0o444)
-        json_data = call_api(SERVER_PATH + 'images/' + filename)
-        if not json_data:
-            return render_template('main.html', error_msg='Error fetching data')
+        # Call the first API to gain headline
+        title = call_api(API + SERVER_PATH + 'images/' + filename)
+        if not title or title['status'] == 'Running':
+            return render_template('main.html', error_msg='Error fetching headline')
+        # Call the second API to gain detailed information
+        json_data = call_api(API2 + SERVER_PATH + 'images/' + filename)
+        if not json_data or json_data['status'] == 'Running':
+            return render_template('main.html', error_msg='Error fetching detailed information')
+
         return render_template('main.html', base_msg=json_data)
     else:
         return render_template('main.html', error_msg='File is blank or the file format is not allowed')
@@ -69,9 +76,8 @@ def upload_img():
 
 def call_api(path):
     try:
-        return req.get(url=API + path).text
-        # return json.loads(req.get(url=API + path).text)
-    except ValueError:
+        return json.loads(req.get(url=path).text)
+    except:
         return None
 
 
