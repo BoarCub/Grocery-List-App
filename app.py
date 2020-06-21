@@ -17,8 +17,8 @@ db = SQLAlchemy()
 API = 'https://groceryreaderv6-1.azurewebsites.net/api/ReadOCRLines?url='
 API2 = 'https://nutritionalreaderv1.azurewebsites.net/api/NutritionLines?url='
 
-# SERVER_PATH = 'http://groceryreader.com/GL2020/'
-SERVER_PATH = 'http://www.dlearninglab.com/GL2020/'
+SERVER_PATH = 'http://www.groceryreader.com/GL2020/images/'
+# SERVER_PATH = 'http://www.dlearninglab.com/GL2020/'
 UPLOAD_FOLDER = '/var/www/GL2020/images'
 ALLOWED_EXTENSIONS = ['bmp', 'pdf', 'png', 'jpeg', 'TIFF']
 
@@ -26,9 +26,13 @@ DIETARY_TYPES = {'LOW-CARBOHYDRATE': 'Food low inCARBOHYDRATE',
                  'LOW-FAT/SUGAR': 'Food low in fat and sugar',
                  'HIGH-VITAMIN': 'Food high in vitamin',
                  'HIGH-PROTEIN': 'Food high in protein. Especially for people who are working out.'
-                 'HIGH-'
+                                 'HIGH-'
                  }
 
+
+# SAMPLE API RETURN FOR LABELS
+# {"Calories":"230","TotalFat":"8g","SaturatedFat":"1g","TransFat":"0g",
+# "Cholesterol":"Omg","Sodium":"160mg","TotalCarbohydrate":"37g","DietaryFiber":"4g","Sugar":"1g","Protein":"3g"}
 
 @app.route('/main', methods=['GET'])
 @login_required
@@ -50,6 +54,19 @@ def index():
 def profile():
     return render_template('profile.html', user=current_user)
 
+    # SAMPLE API RETURN FOR LABELS
+    # {"Calories":"230","TotalFat":"8g","SaturatedFat":"1g","TransFat":"0g",
+    # "Cholesterol":"Omg","Sodium":"160mg","TotalCarbohydrate":"37g","DietaryFiber":"4g","Sugar":"1g","Protein":"3g"}
+
+
+@app.route('/report', methods=['GET', 'POST'])
+@login_required
+def report(title, json_data):
+    return render_template('report.html', name=title, cal=json_data['Calories'], totalfat=json_data['TotalFat'],
+                           sfat=json_data['SaturatedFat'], tfat=json_data['TransFat'], chole=json_data['Cholesterol'],
+                           sodium=json_data['Sodium'], totalcarbo=json_data['TotalCarbohydrate'],
+                           dfiber=json_data['DietaryFiber'], sugar=json_data['Sugar'], protein=json_data['Protein'])
+
 
 @app.route('/api/upload_img', methods=['POST'])
 @login_required
@@ -66,18 +83,20 @@ def upload_img():
         filename = secure_filename(str(random.random()) + file.filename)
         save_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(save_path)
+        # Images for read only
         os.chmod(save_path, 0o444)
         # Call the first API to gain headline
-        title = json_safe_get(call_api(API + SERVER_PATH + 'images/' + filename), 'title')
+        title = json_safe_get(call_api(API + SERVER_PATH + filename), 'title')
         if not title:
             return render_template('main.html', error_msg='Error fetching headline')
         # Call the second API to gain detailed information
-        json_data = call_api(API2 + SERVER_PATH + 'images/' + filename)
-        calories = json_safe_get(json_data, 'Calories')
-        if not calories:
+        json_data = call_api(API2 + SERVER_PATH + filename)
+        if len(json_data) != 10:
             return render_template('main.html', error_msg='Error fetching detailed information')
-
-        return render_template('main.html', base_msg=json_data)
+        for key in json_data.keys:
+            if json_data[key] == '':
+                json_data[key] = 'No data fetched'
+        return report(title, json_data)
     else:
         return render_template('main.html', error_msg='File is blank or the file format is not allowed')
 

@@ -16,6 +16,7 @@ class User(db.Model, UserMixin):
     # nutrition = db.Column(db.)
 
     words = db.Column(db.String)
+    bmi = db.Column(db.String)
 
     def __init__(self, email, name, password):
         self.email = email
@@ -47,3 +48,13 @@ class User(db.Model, UserMixin):
 
     def get_calories_daily(self):
         return self.calories_daily
+
+    def get_rec(self):
+        """Get recommended amount of every nutrient"""
+        return
+
+    def get_bmi(self):
+        try:
+            return int(self.bmi)
+        except ValueError:
+            return 0
