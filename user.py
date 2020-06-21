@@ -10,6 +10,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
     authenticated = db.Column(db.Boolean, default=False)
+    calories_daily = db.Column(db.Integer, default=1000)
     # guided = db.Column(db.Boolean, default=False)
     # dietary_type = db.Column(db.String(100), default=None)
     # nutrition = db.Column(db.)
@@ -43,3 +44,6 @@ class User(db.Model, UserMixin):
 
     def add_dietary(self, word):
         self.words += ',' + word
+
+    def get_calories_daily(self):
+        return self.calories_daily
