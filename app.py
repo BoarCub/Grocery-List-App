@@ -22,6 +22,13 @@ SERVER_PATH = 'http://www.dlearninglab.com/GL2020/'
 UPLOAD_FOLDER = '/var/www/GL2020/images'
 ALLOWED_EXTENSIONS = ['bmp', 'pdf', 'png', 'jpeg', 'TIFF']
 
+DIETARY_TYPES = {'LOW-CARBOHYDRATE': 'Food low inCARBOHYDRATE',
+                 'LOW-FAT/SUGAR': 'Food low in fat and sugar',
+                 'HIGH-VITAMIN': 'Food high in vitamin',
+                 'HIGH-PROTEIN': 'Food high in protein. Especially for people who are working out.'
+                 'HIGH-'
+                 }
+
 
 @app.route('/main', methods=['GET'])
 @login_required

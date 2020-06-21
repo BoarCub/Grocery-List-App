@@ -10,9 +10,11 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
     authenticated = db.Column(db.Boolean, default=False)
+    # guided = db.Column(db.Boolean, default=False)
+    # dietary_type = db.Column(db.String(100), default=None)
+    # nutrition = db.Column(db.)
 
     words = db.Column(db.String)
-    number_of_words = 0
 
     def __init__(self, email, name, password):
         self.email = email
@@ -37,11 +39,7 @@ class User(db.Model, UserMixin):
         return False
 
     def get_words(self):
-        return self.word.split(',')
+        return self.words.split(',')
 
-    def add_word(self, word):
-        self.number_of_words += 1
-        self.word += ',' + word
-
-    def get_words_len(self):
-        return self.number_of_words
+    def add_dietary(self, word):
+        self.words += ',' + word

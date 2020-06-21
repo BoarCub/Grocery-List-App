@@ -3,7 +3,7 @@
 {% block style %}is-primary{% endblock %}
 
 {% block content%}
-    <h1 class="title">Welcome to Grocery List!</h1>
+    <h1 class="title">Welcome to Grocery Reader!</h1>
     {% if not current_user.is_authenticated %}
         <h1 class="subtitle">Login to get started!</h1>
         <a class="button is-link" href="{{ url_for('auth.login') }}">Login</a>
