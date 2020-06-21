@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Main{% endblock %}
 {% block content %}
+    $body-background-color="#000000";
     <h1 class="subtitle">Get your dietary feedback</h1>
     <form method=post enctype=multipart/form-data action="{{ url_for('upload_img') }}">
         <input type=file name=file class="button">
