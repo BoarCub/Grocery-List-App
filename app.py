@@ -63,10 +63,39 @@ def profile():
 @app.route('/report', methods=['GET', 'POST'])
 @login_required
 def report(json_data):
-    return render_template('report.html', cal=json_data['Calories'], totalfat=json_data['TotalFat'],
-                           sfat=json_data['SaturatedFat'], tfat=json_data['TransFat'], chole=json_data['Cholesterol'],
-                           sodium=json_data['Sodium'], totalcarbo=json_data['TotalCarbohydrate'],
-                           dfiber=json_data['DietaryFiber'], sugar=json_data['Sugar'], protein=json_data['Protein'])
+    cal_daily = current_user.calories_daily
+    cal = int(json_data['Calories'])
+
+    totalfat = float(json_data['TotalFat'])
+    sfat = float(json_data['SaturatedFat'])
+    tfat = float(json_data['TransFat'])
+
+    chole = int(json_data['Cholesterol'])
+    sodium = int(json_data['Sodium'])
+    totalcarbo = int(json_data['TotalCarbohydrate'])
+    sugar = int(json_data['Sugar'])
+
+    if totalfat >= cal_daily * 0.35:
+        totalfat = 'Total fat is too much for you. You got ' + str(totalfat) + '/' + str(cal_daily * 0.35)
+    if sfat >= cal_daily * 0.1:
+        sfat = 'Saturated fat is too much for you. You got ' + str(sfat) + '/' + str(cal_daily * 0.1)
+    if tfat >= cal_daily * 0.01:
+        tfat = 'Trans fat is too much for you. You got ' + str(tfat) + '/' + str(cal_daily * 0.01)
+    if chole >= 300 or chole > 0.07 * float(json_data['SaturatedFat']):
+        chole = 'Cholesterol fat is too much for you. You got ' + str(chole) + '/' + \
+                str(0.07 * float(json_data['SaturatedFat']))
+    if sodium >= 2300:
+        sodium = 'Sodium is too much for you. You got ' + str(sodium) + '/2300'
+    if totalcarbo >= cal_daily * 0.65:
+        totalcarbo = 'Total Carbohydrate is too much for you. You got ' + str(tfat) + '/Max:' + str(cal_daily * 0.65)
+    if totalcarbo <= cal_daily * 0.45:
+        totalcarbo = 'Total Carbohydrate is too less for you. You got ' + str(tfat) + '/Min:' + str(cal_daily * 0.45)
+    if sugar >= 30.5:
+        sugar = 'Total sugar is too much for you. You got ' + str(sugar) + '/Max:30.5'
+    if cal > 100:
+        car = 'Total Calories is too much for you. You got ' + str(cal) + '/Max:100'
+    return render_template('report.html', cal=cal, totalfat=totalfat, sfat=sfat, tfat=tfat, chole=chole, sodium=sodium,
+                           totalcarbo=totalcarbo, sugar=sugar)
 
 
 @app.route('/api/upload_img', methods=['POST'])
@@ -100,6 +129,12 @@ def upload_img():
         return report(json_data)
     else:
         return render_template('main.html', error_msg='File is blank or the file format is not allowed')
+
+
+@app.route('/daily_calories', methods=['POST'])
+def daily_calories():
+    calories = int(request.form['calories'])
+    current_user.calories_daily = calories
 
 
 def call_api(path):

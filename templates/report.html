@@ -3,12 +3,7 @@
 {% block content %}
 
     <h2 class="subtitle">Calories: {{ cal }} / </h2>
-    {% if current_user.get_rec()['cal'] >= cal %}
-        <h2 class="subtitle" style="color: #f7595f">current_user.get_rec()['cal']</h2>
-    {% else %}
-        <h2 class="subtitle" style="color: blue">current_user.get_rec()['cal']</h2>
-    {% endif %}
-    <h2 class="subtitle">Sugar: {{ sugar }} / </h2>
+    <h2 class="subtitle">Sugar: {{ sugar }}</h2>
     <h2 class="subtitle">Protein: {{ protein }} / </h2>
     <h2 class="subtitle">Sodium: {{ sodium}} / </h2>
     <h2 class="subtitle">Total Carbohydrate: {{ totalcarbo }} / </h2>
