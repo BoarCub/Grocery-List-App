@@ -93,7 +93,7 @@ def report(json_data):
     if sugar >= 30.5:
         sugar = 'Total sugar is too much for you. You got ' + str(sugar) + '/Max:30.5'
     if cal > 100:
-        car = 'Total Calories is too much for you. You got ' + str(cal) + '/Max:100'
+        cal = 'Total Calories is too much for you. You got ' + str(cal) + '/Max:100'
     return render_template('report.html', cal=cal, totalfat=totalfat, sfat=sfat, tfat=tfat, chole=chole, sodium=sodium,
                            totalcarbo=totalcarbo, sugar=sugar)
 
@@ -135,6 +135,7 @@ def upload_img():
 def daily_calories():
     calories = int(request.form['calories'])
     current_user.calories_daily = calories
+    return redirect(url_for('index'))
 
 
 def call_api(path):
