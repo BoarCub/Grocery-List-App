@@ -60,4 +60,7 @@ class User(db.Model, UserMixin):
             return 0
 
     def is_guided(self):
+        if not self.guided:
+            self.guided = True
+            return False
         return self.guided

@@ -2,22 +2,24 @@
 {% block title %}Food Report{% endblock %}
 {% block content %}
 
-    return render_template('report.html', cal=json_data['Calories'], totalfat=json_data['TotalFat'],
-    sfat=json_data['SaturatedFat'], tfat=json_data['TransFat'], chole=json_data['Cholesterol'],
-    sodium=json_data['Sodium'], totalcarbo=json_data['TotalCarbohydrate'],
-    dfiber=json_data['DietaryFiber'], sugar=json_data['Sugar'], protein=json_data['Protein'])
+    <h2 class="subtitle">Calories: {{ cal }} / </h2>
+    {% if current_user.get_rec()['cal'] >= cal %}
+        <h2 class="subtitle" style="color: #f7595f">current_user.get_rec()['cal']</h2>
+    {% else %}
+        <h2 class="subtitle" style="color: blue">current_user.get_rec()['cal']</h2>
+    {% endif %}
+    <h2 class="subtitle">Sugar: {{ sugar }} / </h2>
+    <h2 class="subtitle">Protein: {{ protein }} / </h2>
+    <h2 class="subtitle">Sodium: {{ sodium}} / </h2>
+    <h2 class="subtitle">Total Carbohydrate: {{ totalcarbo }} / </h2>
+    <h2 class="subtitle">Total Fat: {{ totalfat }} / </h2>
+    <h2 class="subtitle">Saturated Fat: {{ sfat }} / </h2>
+    <h2 class="subtitle">Trans Fat: {{ tfat }} / </h2>
+    <h2 class="subtitle">Cholesterol: {{ chole }} / </h2>
+    <h2 class="subtitle">Dietary Fiber: {{ dfiber }} / </h2>
 
-    <h2 class="subtitle">Calories: {{ cal }} / {{ current_user.get_rec()['cal'] }}</h2>
-    <h2 class="subtitle">Sugar: {{ sugar }} / {{ current_user.get_rec()['cal'] }}</h2>
-    <h2 class="subtitle">Protein: {{ protein }} / {{ current_user.get_rec()['cal'] }}</h2>
-    <h2 class="subtitle">Sodium: {{ sodium}} / {{ current_user.get_rec()['cal'] }}</h2>
-    <h2 class="subtitle">Total Carbohydrate: {{ totalcarbo }} / {{ current_user.get_rec()['cal'] }}</h2>
-    <h2 class="subtitle">Total Fat: {{ totalfat }} / {{ current_user.get_rec()['cal'] }}</h2>
-    <h2 class="subtitle">Saturated Fat: {{ sfat }} / {{ current_user.get_rec()['cal'] }}</h2>
-    <h2 class="subtitle">Trans Fat: {{ tfat }} / {{ current_user.get_rec()['cal'] }}</h2>
-    <h2 class="subtitle">Cholesterol: {{ chole }} / {{ current_user.get_rec()['cal'] }}</h2>
-    <h2 class="subtitle">Dietary Fiber: {{ dfiber }} / {{ current_user.get_rec()['cal'] }}</h2>
-
+    <br>
+    <a class="button is-rounded is-link" href="{{ url_for('main_page') }}">Go to Main page</a>
 
 
 {% endblock %}
