@@ -4,6 +4,7 @@ $age=30;
 $height=1.5;
 $weight=80;
 $sex=-1;
+$calories=2500;
 if (isset($_POST['age'])){
 	$age=$_POST['age'];
 	if ($age>100){
@@ -46,14 +47,26 @@ if (isset($_POST['sex'])){
 } else {
 	$sex=-1;
 }
+
+if ($age!=-1 && $height!=-1 && $weight!=-1 && $sex!=-1){
+	if ($sex==0){
+		$calories=66+(13.877)*$weight+(507.874)*$height-(6.8)*$age;
+	}
+	if ($sex==1){
+		$calories=655+(9.482)*$weight+(185.0)*$height-(4.7)*$age;
+	}
+}
+$calories*=1.375;
+$calories-=($calories%1);
 echo $age;
-$vitaminD=false;
+/*$vitaminD=false;
 if (isset($_POST['VitaminD'])){
 	$vitaminD=true;
 } else {
 	$vitaminD=false;
 }
 echo "Hello".var_export($vitaminD);
+*/
 ?>
 <!DOCTYPE HTML>
 <html>
