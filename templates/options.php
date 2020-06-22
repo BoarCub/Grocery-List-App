@@ -50,7 +50,10 @@ if (isset($_POST['sex'])){
 
 if ($age!=-1 && $height!=-1 && $weight!=-1 && $sex!=-1){
 	if ($sex==0){
-		$calories=66+(13.877)*$weight+(507.874)*$height-(6.8)*$age;
+		$calories=66+
+		(13.877)*$weight+
+		(507.874)*$height-
+		(6.8)*$age;
 	}
 	if ($sex==1){
 		$calories=655+(9.482)*$weight+(185.0)*$height-(4.7)*$age;
@@ -58,7 +61,7 @@ if ($age!=-1 && $height!=-1 && $weight!=-1 && $sex!=-1){
 }
 $calories*=1.375;
 $calories-=($calories%1);
-echo $age;
+
 /*$vitaminD=false;
 if (isset($_POST['VitaminD'])){
 	$vitaminD=true;
@@ -154,18 +157,25 @@ input:checked + .slider:before {
 		<p>Age</p>
 		<input type="number" name="age" />
 		<h6 style="display:inline">Years</h6>
+		<?php if (isset($_POST['age'])) echo $age." Years" ?>
 		<p>Height</p>
-		<input type="number" name="height" />
+		<input type="number" name="height" step="0.01"/>
 		<h6 style="display:inline">Meters</h6>
+		<?php if (isset($_POST['height'])) echo $height." Meters" ?>
 		<p>Weight</p>
-		<input type="number" name="weight" />
+		<input type="number" name="weight" step="0.01"/>
 		<h6 style="display:inline">Kilograms</h6>
+		<?php if (isset($_POST['weight'])) echo $weight." Kilograms" ?>
 		<p>Sex</p>
 		<select name="sex">
 			<option value="male">Male</option>
 			<option value="female">Female</option>
 		</select>
-		
+		<?php if (isset($_POST['sex'])) {
+			if ($_POST['sex']==0) echo "Male";
+			if ($_POST['sex']==1) echo "Female";
+		}
+		?>
 		<br />
 		<br />
 		<input type="submit" name="submit" value="Update" />
