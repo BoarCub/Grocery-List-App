@@ -68,6 +68,7 @@ def report(json_data):
 
     totalfat = float(json_data['TotalFat'])
     sfat = float(json_data['SaturatedFat'])
+    print(sfat)
     tfat = float(json_data['TransFat'])
 
     chole = int(json_data['Cholesterol'])
@@ -77,8 +78,8 @@ def report(json_data):
 
     if totalfat >= cal_daily * 0.35:
         totalfat = 'Total fat is too much for you. You got ' + str(totalfat) + '/' + str(cal_daily * 0.35)
-    if sfat >= cal_daily * 0.1:
-        sfat = 'Saturated fat is too much for you. You got ' + str(sfat) + '/' + str(cal_daily * 0.1)
+    # if sfat >= cal_daily * 0.1:
+    #     sfat = 'Saturated fat is too much for you. You got ' + str(sfat) + '/' + str(cal_daily * 0.1)
     if tfat >= cal_daily * 0.01:
         tfat = 'Trans fat is too much for you. You got ' + str(tfat) + '/' + str(cal_daily * 0.01)
     if chole >= 300 or chole > 0.07 * float(json_data['SaturatedFat']):
@@ -202,7 +203,7 @@ def run_app():
         from user import User
         return User.query.get(int(user_id))
 
-    app.run()
+    app.run(debug=True)
 
 
 if __name__ == '__main__':

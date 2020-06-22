@@ -2,16 +2,14 @@
 {% block title %}Food Report{% endblock %}
 {% block content %}
 
-    <h2 class="subtitle">Calories: {{ cal }} / </h2>
+    <h2 class="subtitle">Calories: {{ cal }}</h2>
     <h2 class="subtitle">Sugar: {{ sugar }}</h2>
-    <h2 class="subtitle">Protein: {{ protein }} / </h2>
-    <h2 class="subtitle">Sodium: {{ sodium}} / </h2>
-    <h2 class="subtitle">Total Carbohydrate: {{ totalcarbo }} / </h2>
-    <h2 class="subtitle">Total Fat: {{ totalfat }} / </h2>
-    <h2 class="subtitle">Saturated Fat: {{ sfat }} / </h2>
-    <h2 class="subtitle">Trans Fat: {{ tfat }} / </h2>
-    <h2 class="subtitle">Cholesterol: {{ chole }} / </h2>
-    <h2 class="subtitle">Dietary Fiber: {{ dfiber }} / </h2>
+    <h2 class="subtitle">Sodium: {{ sodium}}</h2>
+    <h2 class="subtitle">Total Carbohydrate: {{ totalcarbo }}</h2>
+    <h2 class="subtitle">Total Fat: {{ totalfat }}</h2>
+{#    <h2 class="subtitle">Saturated Fat: {{ sfat }}</h2>#}
+    <h2 class="subtitle">Trans Fat: {{ tfat }}</h2>
+    <h2 class="subtitle">Cholesterol: {{ chole }}</h2>
 
     <br>
     <a class="button is-rounded is-link" href="{{ url_for('main_page') }}">Go to Main page</a>
