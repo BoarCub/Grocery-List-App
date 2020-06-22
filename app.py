@@ -76,6 +76,9 @@ def report(json_data):
     totalcarbo = int(json_data['TotalCarbohydrate'])
     sugar = int(json_data['Sugar'])
 
+    protein = int(json_data['Protein'])
+    dfiber = int(json_data['DietaryFiber'])
+
     if totalfat >= cal_daily * 0.35:
         totalfat = 'Total fat is too much for you. You got ' + str(totalfat) + '/' + str(cal_daily * 0.35)
     # if sfat >= cal_daily * 0.1:
@@ -96,7 +99,7 @@ def report(json_data):
     if cal > 100:
         cal = 'Total Calories is too much for you. You got ' + str(cal) + '/Max:100'
     return render_template('report.html', cal=cal, totalfat=totalfat, sfat=sfat, tfat=tfat, chole=chole, sodium=sodium,
-                           totalcarbo=totalcarbo, sugar=sugar)
+                           totalcarbo=totalcarbo, sugar=sugar, protein=protein, dfiber=dfiber)
 
 
 @app.route('/api/upload_img', methods=['POST'])
