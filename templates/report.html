@@ -4,14 +4,21 @@
 
     <h2 class="subtitle">Calories: {{ cal }}</h2>
     <h2 class="subtitle">Sugar: {{ sugar }}</h2>
-    <h2 class="subtitle">Sodium: {{ sodium}}</h2>
-    <h2 class="subtitle">Total Carbohydrate: {{ totalcarbo }}</h2>
+    <h2 class="subtitle">Sodium: {{ sodium }}</h2>
+    {% if not 'Total Carbohydrate is too less for you. You got 0.0/Min' in totalcarbo %}
+        <h2 class="subtitle">Total Carbohydrate: {{ totalcarbo }}</h2>
+    {% endif %}
     <h2 class="subtitle">Total Fat: {{ totalfat }}</h2>
 {#    <h2 class="subtitle">Saturated Fat: {{ sfat }}</h2>#}
-    <h2 class="subtitle">Trans Fat: {{ tfat }}</h2>
-    <h2 class="subtitle">Cholesterol: {{ chole }}</h2>
+    {% if not tfat == 0.0 %}
+        <h2 class="subtitle">Trans Fat: {{ tfat }}</h2>
+    {% endif %}
+    {% if not chole == 0 %}
+        <h2 class="subtitle">Cholesterol: {{ chole }}</h2>
+    {% endif %}
 
     <br>
+    <h2 class="subtitle" style="color: red">If you didn't see a suggestion beside it, it means your diet is perfect</h2>
     <a class="button is-rounded is-link" href="{{ url_for('main_page') }}">Go to Main page</a>
 
 
