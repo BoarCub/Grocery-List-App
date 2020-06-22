@@ -51,7 +51,7 @@ class User(db.Model, UserMixin):
 
     def get_rec(self):
         """Get recommended amount of every nutrient"""
-        return
+        return {'cal': 0}
 
     def get_bmi(self):
         try:

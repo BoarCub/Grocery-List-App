@@ -14,7 +14,8 @@ app = Flask(__name__)
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
-API = 'https://groceryreaderv6-1.azurewebsites.net/api/ReadOCRLines?url='
+# The first API is deprecated
+# API = 'https://groceryreaderv6-1.azurewebsites.net/api/ReadOCRLines?url='
 API2 = 'https://nutritionalreaderv1.azurewebsites.net/api/NutritionLines?url='
 
 SERVER_PATH = 'http://www.groceryreader.com/GL2020/images/'
@@ -61,8 +62,8 @@ def profile():
 
 @app.route('/report', methods=['GET', 'POST'])
 @login_required
-def report(title, json_data):
-    return render_template('report.html', name=title, cal=json_data['Calories'], totalfat=json_data['TotalFat'],
+def report(json_data):
+    return render_template('report.html', cal=json_data['Calories'], totalfat=json_data['TotalFat'],
                            sfat=json_data['SaturatedFat'], tfat=json_data['TransFat'], chole=json_data['Cholesterol'],
                            sodium=json_data['Sodium'], totalcarbo=json_data['TotalCarbohydrate'],
                            dfiber=json_data['DietaryFiber'], sugar=json_data['Sugar'], protein=json_data['Protein'])
@@ -85,10 +86,10 @@ def upload_img():
         file.save(save_path)
         # Images for read only
         os.chmod(save_path, 0o444)
-        # Call the first API to gain headline
-        title = json_safe_get(call_api(API + SERVER_PATH + filename), 'title')
-        if not title:
-            return render_template('main.html', error_msg='Error fetching headline')
+        # # Call the first API to gain headline
+        # title = json_safe_get(call_api(API + SERVER_PATH + filename), 'title')
+        # if not title:
+        #     return render_template('main.html', error_msg='Error fetching headline')
         # Call the second API to gain detailed information
         json_data = call_api(API2 + SERVER_PATH + filename)
         if len(json_data) != 10:
@@ -96,7 +97,7 @@ def upload_img():
         for key in json_data.keys():
             if json_data[key] == '':
                 json_data[key] = 'No data fetched'
-        return report(title, json_data)
+        return report(json_data)
     else:
         return render_template('main.html', error_msg='File is blank or the file format is not allowed')
 
