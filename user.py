@@ -59,8 +59,8 @@ class User(db.Model, UserMixin):
         except ValueError:
             return 0
 
-    # def is_guided(self):
-    #     if not self.guided:
-    #         self.guided = True
-    #         return False
-    #     return self.guided
+    def is_guided(self):
+        if not self.guided:
+            self.guided = True
+            return False
+        return self.guided
