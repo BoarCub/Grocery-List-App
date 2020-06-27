@@ -33,9 +33,8 @@ DIETARY_TYPES = {'LOW-CARBOHYDRATE': 'Food low inCARBOHYDRATE',
                  }
 
 
-@login_required
 def account_setup_required(func):
-    @wraps
+    @wraps(func)
     def wrapper(*args, **kwargs):
         if not current_user.guided or current_user.calories_daily == -1:
             return render_template('main.html', error_msg="You have not set up your account yet. Click 'profile to "
@@ -75,6 +74,7 @@ def profile():
 
 @app.route('/report', methods=['GET', 'POST'])
 @account_setup_required
+@login_required
 def report(json_data):
     cal_daily = current_user.calories_daily
     cal = int(json_data['Calories'])
@@ -116,6 +116,7 @@ def report(json_data):
 
 @app.route('/api/upload_img', methods=['POST'])
 @account_setup_required
+@login_required
 def upload_img():
     if 'file' not in request.files:
         return render_template('main.html', error_msg='No file selected')
