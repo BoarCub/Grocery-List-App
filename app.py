@@ -33,6 +33,7 @@ DIETARY_TYPES = {'LOW-CARBOHYDRATE': 'Food low inCARBOHYDRATE',
                  }
 
 
+@login_required
 def account_setup_required(func):
     @wraps
     def wrapper(*args, **kwargs):
@@ -72,16 +73,14 @@ def profile():
     # "Cholesterol":"Omg","Sodium":"160mg","TotalCarbohydrate":"37g","DietaryFiber":"4g","Sugar":"1g","Protein":"3g"}
 
 
-@account_setup_required
 @app.route('/report', methods=['GET', 'POST'])
-@login_required
+@account_setup_required
 def report(json_data):
     cal_daily = current_user.calories_daily
     cal = int(json_data['Calories'])
 
     totalfat = float(json_data['TotalFat'])
     sfat = float(json_data['SaturatedFat'])
-    print(sfat)
     tfat = float(json_data['TransFat'])
 
     chole = int(json_data['Cholesterol'])
@@ -115,9 +114,8 @@ def report(json_data):
                            totalcarbo=totalcarbo, sugar=sugar, protein=protein, dfiber=dfiber)
 
 
-@account_setup_required
 @app.route('/api/upload_img', methods=['POST'])
-@login_required
+@account_setup_required
 def upload_img():
     if 'file' not in request.files:
         return render_template('main.html', error_msg='No file selected')
