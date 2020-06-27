@@ -61,7 +61,9 @@ if ($age!=-1 && $height!=-1 && $weight!=-1 && $sex!=-1){
 }
 $calories*=1.375;
 $calories-=($calories%1);
-
+$url = '/daily_calories/' . $calories;
+require($url);
+//header("Location: options.html");
 /*$vitaminD=false;
 if (isset($_POST['VitaminD'])){
 	$vitaminD=true;
@@ -71,123 +73,3 @@ if (isset($_POST['VitaminD'])){
 echo "Hello".var_export($vitaminD);
 */
 ?>
-<!DOCTYPE HTML>
-<html>
-	<head>
-	<title>Grocery Reader - Options</title>
-	<link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap" rel="stylesheet">
-	<link href="Styles/Stylesheet.css" rel="stylesheet" />
-
-	<style>
-
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.switch input {display:none;}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
- 
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-	</style>
-
-	</head>
-	
-	<body>
-		<div class="top_right_container2">
-
-
-<button id="options_button"><a href="http://groceryreader.com/index">Back</a></button>
-
-</div>
-		<!--<div>
-		<button class="top_right_container" id="options_button"><a href="success.php">Back</a></button>
-		</div>
-		-->
-
-		
-		<form method="post" action="options.php">
-		<p>Age</p>
-		<input type="number" name="age" />
-		<h6 style="display:inline">Years</h6>
-		<?php if (isset($_POST['age'])) echo $age." Years" ?>
-		<p>Height</p>
-		<input type="number" name="height" step="0.01"/>
-		<h6 style="display:inline">Meters</h6>
-		<?php if (isset($_POST['height'])) echo $height." Meters" ?>
-		<p>Weight</p>
-		<input type="number" name="weight" step="0.01"/>
-		<h6 style="display:inline">Kilograms</h6>
-		<?php if (isset($_POST['weight'])) echo $weight." Kilograms" ?>
-		<p>Sex</p>
-		<select name="sex">
-			<option value="male">Male</option>
-			<option value="female">Female</option>
-		</select>
-		<?php if (isset($_POST['sex'])) {
-			if ($_POST['sex']==0) echo "Male";
-			if ($_POST['sex']==1) echo "Female";
-		}
-		?>
-		<br />
-		<br />
-		<input type="submit" name="submit" value="Update" />
-		</form>
-		
-
-		<!--<script>
-		if (!empty($_POST)){
-			echo "Hello the form is not empty!!";
-		}
-		//document.getElementById("option_form").submit();
-		</script>-->
-	
-	</body>
-</html>

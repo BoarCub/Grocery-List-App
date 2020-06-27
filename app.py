@@ -1,6 +1,8 @@
 import json
 import random
 import os
+from functools import wraps
+
 import requests as req
 from flask import Flask, request, flash, render_template, Blueprint, redirect, url_for
 from flask_login import login_required, current_user, LoginManager
@@ -31,9 +33,19 @@ DIETARY_TYPES = {'LOW-CARBOHYDRATE': 'Food low inCARBOHYDRATE',
                  }
 
 
+def account_setup_required(func):
+    @wraps
+    def wrapper(*args, **kwargs):
+        if not current_user.guided or current_user.calories_daily == -1:
+            return render_template('main.html', error_msg="You have not set up your account yet. Click 'profile to "
+                                                          "complete' ")
+        func(*args, **kwargs)
+    return wrapper
+
 # SAMPLE API RETURN FOR LABELS
 # {"Calories":"230","TotalFat":"8g","SaturatedFat":"1g","TransFat":"0g",
 # "Cholesterol":"Omg","Sodium":"160mg","TotalCarbohydrate":"37g","DietaryFiber":"4g","Sugar":"1g","Protein":"3g"}
+
 
 @app.route('/main', methods=['GET'])
 @login_required
@@ -60,6 +72,7 @@ def profile():
     # "Cholesterol":"Omg","Sodium":"160mg","TotalCarbohydrate":"37g","DietaryFiber":"4g","Sugar":"1g","Protein":"3g"}
 
 
+@account_setup_required
 @app.route('/report', methods=['GET', 'POST'])
 @login_required
 def report(json_data):
@@ -102,6 +115,7 @@ def report(json_data):
                            totalcarbo=totalcarbo, sugar=sugar, protein=protein, dfiber=dfiber)
 
 
+@account_setup_required
 @app.route('/api/upload_img', methods=['POST'])
 @login_required
 def upload_img():
@@ -137,7 +151,7 @@ def upload_img():
 
 @app.route('/daily_calories', methods=['POST'])
 def daily_calories():
-    calories = int(request.form['calories'])
+    calories = float(request.form['calories'])
     current_user.calories_daily = calories
     return redirect(url_for('index'))
 
@@ -148,15 +162,15 @@ def call_api(path):
     except:
         return None
 
-
-# Call this function if the json data is not ensured filled with data and may cause KeyError if fetched directly
-def json_safe_get(json, key):
-    if not json or key not in json:
-        return None
-    try:
-        return json[key]
-    except:
-        return None
+# # Call this function if the json data is not ensured filled with data and may cause KeyError if fetched directly
+# @DeprecationWarning
+# def json_safe_get(json, key):
+#     if not json or key not in json:
+#         return None
+#     try:
+#         return json[key]
+#     except:
+#         return None
 
 
 def allowed_file(filename):
