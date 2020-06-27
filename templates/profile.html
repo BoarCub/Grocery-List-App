@@ -8,7 +8,7 @@
     <h1 class="title">
         Welcome {{ user.name }}!
     </h1>
-    <a class="button is-info" href="http://www.groceryreader.com/GL2020/images/options.php">Options</a>
+    <a class="button is-info" href="{{ url_for('options') }}">Options</a>
     <a class="button is-danger" href="{{ url_for('auth.cancel') }}">Cancel my account</a>
     {#                    <section class="top_right_container">#}
 {% endblock %}

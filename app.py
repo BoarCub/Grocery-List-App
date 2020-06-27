@@ -37,8 +37,8 @@ def account_setup_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not current_user.guided or current_user.calories_daily == -1:
-            return render_template('main.html', error_msg="You have not set up your account yet. Click 'profile to "
-                                                          "complete' ")
+            return render_template('main.html', error_msg="You have not set up your account yet. Click "
+                                                          "'profile>>options' to complete ")
         func(*args, **kwargs)
     return wrapper
 
@@ -148,7 +148,16 @@ def upload_img():
         return render_template('main.html', error_msg='File is blank or the file format is not allowed')
 
 
+@app.route('/options')
+@login_required
+def options():
+    if not current_user.is_guided:
+        current_user.is_guided = True
+    return redirect('http://www.groceryreader.com/GL2020/images/options.php')
+
+
 @app.route('/daily_calories', methods=['POST'])
+@login_required
 def daily_calories():
     calories = float(request.form['calories'])
     current_user.calories_daily = calories
